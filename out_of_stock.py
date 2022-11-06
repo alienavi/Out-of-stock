@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # importing libraries
 import requests
 import pickle
@@ -109,11 +107,7 @@ next_page = True
 first_run = True
 loop_count = 1
 while(next_page) :
-    if(first_run):
-        # run request for 1st time with cursor as null
-        variants = GqlQuery().fields([var_edges, page_info]).query('productVariants', input=variables).operation().generate()
-    else :        
-        variants = GqlQuery().fields([var_edges, page_info]).query('productVariants', input=variables).operation().generate()        
+    variants = GqlQuery().fields([var_edges, page_info]).query('productVariants', input=variables).operation().generate()        
     #pprint(variants)    
     data = run_query(variants)
     #pprint(data)
@@ -137,5 +131,7 @@ stock_data = pd.read_csv(ofile)
 
 out_dir = './'+ofile.replace('.csv','')
 Path(out_dir).mkdir(parents=True,exist_ok=True)
+i = 1
 for k,v in stock_data.groupby('Vendor') :
-    v.to_csv(f'{out_dir}/{k}.csv')
+    v.to_csv(f'{out_dir}/{k}_{i}.csv')
+    i = i+1
